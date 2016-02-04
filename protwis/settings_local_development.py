@@ -20,12 +20,13 @@ GOOGLE_ANALYTICS_KEY = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'protwis',
-        'USER': 'protwis',
-        'PASSWORD': 'protwis',
-        'HOST': 'localhost',
+          'OPTIONS': {
+                'options': '-c search_path=protwis_schema'
+            },
+        'NAME': '_ermrest_G4EzuZVqR9yocOczZb08Bw',
     }
 }
+
 
 # Quick-start development settings - unsuitable for production
 
@@ -35,4 +36,5 @@ SECRET_KEY = '-eqrx61@n*z3y1mc1w_@x1+yo(@^!k7i-vjaz0tx1$902a!4mu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['127.0.0.1', 'localhost','gpcr-dev.misd.isi.edu','128.9.132.104','128.9.128.243','div20-anoopk.isi.edu']
+ALLOWED_HOSTS = ['*']

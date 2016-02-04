@@ -48,9 +48,12 @@ INSTALLED_APPS = (
     'sitesearch',
     'build_' + SITE_NAME,
     'construct',
+    'djangosecure',
+    'sslserver',
 )
 
 MIDDLEWARE_CLASSES = (
+    'djangosecure.middleware.SecurityMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,6 +63,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+SECURE_SSL_REDIRECT = True
 
 ROOT_URLCONF = 'protwis.urls'
 

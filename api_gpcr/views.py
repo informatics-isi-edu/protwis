@@ -1,5 +1,6 @@
 from rest_framework import views
 from rest_framework.response import Response
+from rest_framework.renderers import StaticHTMLRenderer
 
 from api.views import *
 
@@ -27,9 +28,11 @@ class SnakePlotView(views.APIView):
     \n/plot/snake/{entry_name}/
     \n{entry_name} is a protein identifier from Uniprot, e.g. adrb2_human
     """
-
+    renderer_classes = (StaticHTMLRenderer,)
     def get(self, request, entry_name=None):
         if entry_name is not None:
             p = Protein.objects.get(entry_name=entry_name)
 
-            return Response(str(p.get_snake_plot()).split('\n'))
+#            return Response(str(p.get_snake_plot()).split('\n'))
+#            return Response(str(p.get_snake_plot()).replace('\n','').replace('\"','\''))
+            return Response(str(p.get_snake_plot()).replace('\n',''))

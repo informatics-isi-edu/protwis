@@ -1,13 +1,17 @@
 from django.shortcuts import render
 from django.conf import settings
 
+from django.http import HttpResponse
+
+
 from news.models import News
 from common.models import ReleaseNotes, ReleaseStatistics
 
 
 def index(request):
     request.session.flush()
-
+    #if not request.COOKIES.get('ermrest'):
+#	    return HttpResponse(len(request.COOKIES), status=401)
     context = {}
     
     # title of the page
