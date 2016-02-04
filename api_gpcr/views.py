@@ -30,9 +30,12 @@ class SnakePlotView(views.APIView):
     """
     renderer_classes = (StaticHTMLRenderer,)
     def get(self, request, entry_name=None):
-        if entry_name is not None:
-            p = Protein.objects.get(entry_name=entry_name)
-
+	    if entry_name is not None:
+		    p = Protein.objects.get(entry_name=entry_name)
+		    resp =  Response(str(p.get_snake_plot()).replace('\n',''))
+		    resp['X-Frame-Options'] = "ALLOWALL"
+		    return resp
 #            return Response(str(p.get_snake_plot()).split('\n'))
 #            return Response(str(p.get_snake_plot()).replace('\n','').replace('\"','\''))
-            return Response(str(p.get_snake_plot()).replace('\n',''))
+		
+#            return Response(str(p.get_snake_plot()).replace('\n',''))
