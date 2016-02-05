@@ -1,6 +1,7 @@
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework.renderers import StaticHTMLRenderer
+from django.shortcuts import get_object_or_404, render
 
 from api.views import *
 
@@ -33,6 +34,8 @@ class SnakePlotView(views.APIView):
 	    if entry_name is not None:
 		    p = Protein.objects.get(entry_name=entry_name)
 		    resp =  Response(str(p.get_snake_plot()).replace('\n',''))
+		    context = {'p':p}
+		    resp = render(request,'protein/protein_snake_plot.html',context)
 		    resp['X-Frame-Options'] = "ALLOWALL"
 		    return resp
 #            return Response(str(p.get_snake_plot()).split('\n'))
