@@ -15,12 +15,16 @@ class HelixBoxView(views.APIView):
     \n/plot/helixbox/{entry_name}/
     \n{entry_name} is a protein identifier from Uniprot, e.g. adrb2_human
     """
-
+    renderer_classes = (StaticHTMLRenderer,)
     def get(self, request, entry_name=None):
-        if entry_name is not None:
-            p = Protein.objects.get(entry_name=entry_name)
-
-            return Response(str(p.get_helical_box()).split('\n'))
+	    if entry_name is not None:
+		    p = Protein.objects.get(entry_name=entry_name)
+#		    resp =  Response(str(p.get_helical_box()).replace('\n',''))
+		    context = {'p':p}
+		    resp = render(request,'protein/protein_helixbox.html',context)
+		    resp['X-Frame-Options'] = "ALLOWALL"
+		    return resp
+	# return Response(str(p.get_helical_box()).split('\n'))
 
 
 class SnakePlotView(views.APIView):
@@ -33,7 +37,7 @@ class SnakePlotView(views.APIView):
     def get(self, request, entry_name=None):
 	    if entry_name is not None:
 		    p = Protein.objects.get(entry_name=entry_name)
-		    resp =  Response(str(p.get_snake_plot()).replace('\n',''))
+#		    resp =  Response(str(p.get_snake_plot()).replace('\n',''))
 		    context = {'p':p}
 		    resp = render(request,'protein/protein_snake_plot.html',context)
 		    resp['X-Frame-Options'] = "ALLOWALL"

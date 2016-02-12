@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import views, generics, viewsets
+from rest_framework.renderers import StaticHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from django.template.loader import render_to_string
@@ -338,7 +339,7 @@ class ProteinAlignment(views.APIView):
     def get(self, request, proteins=None, segments=None):
         if proteins is not None:
             protein_list = proteins.split(",")
-            ps = Protein.objects.filter(sequence_type__slug='wt', entry_name__in=protein_list)
+            ps = Protein.objects.filter( entry_name__in=protein_list)
             
             if segments is not None:
                 segment_list = segments.split(",")
@@ -358,19 +359,24 @@ class ProteinAlignment(views.APIView):
             a.build_alignment()
             
             # render the fasta template as string
-            response = render_to_string('alignment/alignment_fasta.html', {'a': a}).split("\n")
+            #response = render_to_string('alignment/alignment_fasta.html', {'a': a}).split("\n")
 
             # convert the list to a dict
             ali_dict = {}
             k = False
-            for row in response:
-                if row.startswith(">"):
-                    k = row[1:]
-                elif k:
-                    ali_dict[k] = row
-                    k = False
-
-            return Response(ali_dict)
+            num_of_sequences = len(a.proteins)
+            num_residue_columns = len(a.positions) + len(a.segments)
+            renderer_classes = (StaticHTMLRenderer,)
+            response = render(request, 'alignment/alignment_ws.html', {'a': a, 'num_of_sequences': num_of_sequences,'num_residue_columns': num_residue_columns})
+            response['X-Frame-Options'] = "ALLOWALL"
+           # for row in response:
+           #     if row.startswith(">"):
+           #         k = row[1:]
+           #     elif k:
+           #         ali_dict[k] = row
+           #         k = False
+            #return Response(ali_dict)
+            return response
 
 class ProteinAlignmentPartial(ProteinAlignment):
     """
