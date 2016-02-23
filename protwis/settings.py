@@ -64,6 +64,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+MIDDLEWARE_CLASSES += (
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+)
+
+CACHE_MIDDLEWARE_ALIAS = "default"
+CACHE_MIDDLEWARE_SECONDS = 31536000
 SECURE_SSL_REDIRECT = True
 
 ROOT_URLCONF = 'protwis.urls'
@@ -91,6 +99,15 @@ STATIC_ROOT = '/protwis/static/protwis'
 STATICFILES_DIRS = (os.sep.join([BASE_DIR, "static"]),)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/protwis/media/protwis'
+
+
+#caching
+CACHES = {
+		'default': {
+			'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+			'LOCATION': '/var/tmp/django_cache',
+			}
+		}
 
 
 # Serializer
