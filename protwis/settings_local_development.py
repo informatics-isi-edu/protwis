@@ -23,7 +23,7 @@ DATABASES = {
           'OPTIONS': {
                 'options': '-c search_path=protwis_schema'
             },
-        'NAME': '_ermrest_G4EzuZVqR9yocOczZb08Bw',
+        'NAME': '_ermrest_95tv-YdSQC2VyrhXWudhZQ',
     }
 }
 
